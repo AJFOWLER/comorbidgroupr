@@ -1,8 +1,8 @@
 #' Funnel plot of proportions
 #'
-#' @description
+#' @description description add in
 #'
-#' @param
+#' @param params add in
 #'
 #' @inheritParams make_disease_stem
 #'

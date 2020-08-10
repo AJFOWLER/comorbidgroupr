@@ -6,6 +6,9 @@
 \usage{
 determine_default_combinations(comorbid_column)
 }
+\arguments{
+\item{comorbid_column}{}
+}
 \description{
 Determine default number of combinations
 }

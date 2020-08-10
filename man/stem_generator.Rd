@@ -17,5 +17,5 @@ stem_generator(poscolumn, max_combos = 3, all_diseases)
 main_stem for each pattern up to a maximum set in max_combos.
 }
 \description{
-Generate disease stems
+add something better here
 }

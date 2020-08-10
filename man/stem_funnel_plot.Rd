@@ -6,6 +6,9 @@
 \usage{
 stem_funnel_plot(comorbid_column, outcome, stem_cut = 2, x_lim = NULL)
 }
+\arguments{
+\item{params}{add in}
+}
 \description{
-
+description add in
 }

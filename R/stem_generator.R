@@ -1,5 +1,5 @@
 #' Generate disease stems
-#' @Description add something better here
+#' @description add something better here
 #' @param poscolumn Vector of numbers which describe position of 1s in a comorbid string, generated using get_locales().
 #' @param max_combos Number of maximum combinations to attempt.
 #' @param all_diseases List of positions associated with each disease, generated using get_disease_counts().
@@ -10,7 +10,8 @@
 # needs examples
 # dealing with ties is hard
 
-stem_generator = function(poscolumn, max_combos = 3, all_diseases){
+stem_generator = function(poscolumn, max_combos = 3, all_diseases,
+                          min_freq = 0){
   all_dis_count = sapply(all_diseases, length)
 
   # generate the base of the stem
@@ -69,32 +70,6 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases){
 
 # helper functions below #
 
-get_combos = function(positions, combinations = 2){
-  #take all positions and return unique combinations
-  position_ = unlist(positions)
-  # determine length of position (as combn cannot accept n<m)
-  len_pos_ = length(position_)
-
-  if(len_pos_ == 1|| combinations > len_pos_){
-    #NA if n<m or len_pos_ 1 (only one combination of 1!)
-    return(NA)
-  }
-  else{
-    # generate all combinations if n>m
-    return(t(utils::combn(position_, combinations)))
-  }
-}
-
-unique_combos = function(positions, combo_numbers=2){
-
-  # lapply to positions the get_combos function
-  all_combos = lapply(positions, function(x) get_combos(x, combinations = combo_numbers))
-  # remove NA lists (from error capture in get_combos)
-  all_combos_nan = all_combos[!is.na(all_combos)]
-  # generate matrix of unique combinations
-  unique_combos = unique(do.call(rbind, all_combos_nan))
-  return(unique_combos)
-}
 
 
 calculate_group_frequency = function(unique_combinations, disease_list){

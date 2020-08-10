@@ -6,6 +6,21 @@
 \usage{
 split_stem(stems, cut_level = 1, maximal = TRUE)
 }
+\arguments{
+\item{stems}{character vector; stems to be processed}
+
+\item{cut_level}{numeric; he level at which stems should be cut (i.e. the number of diagnoses)}
+
+\item{maximal}{logical; true if the 'maximal' stem is to be considered for each record, or if it is to be limited
+to only records with the same number of diagnoses as cut_level}
+}
+\value{
+a vector of the stems cut at the correct number of diagnoses
+}
 \description{
-Process stems after deriving
+description
+}
+\examples{
+stems <- c('4;5-6;3-5-6;;', '4;5-4;;;', '5;5-6;3-5-6;3-5-6-7;')
+split_stem(stems, cut_level = 3, maximal = TRUE)
 }

@@ -1,3 +1,8 @@
+# if we let people generate 'death strings'?
+
+
+
+
 # generate test_dat
 
 #test_dat = read.csv("C:/Users/Alex/Dropbox/PhD/QoL/Routine_PROMS_data/HIP_PROMS/Hip_201718.csv")

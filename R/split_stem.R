@@ -1,13 +1,16 @@
 #' Process stems after deriving
-#' @description
-#' @params stems vector of stems to be processed
-#' @params cut_level the level at which stems should be cut (i.e. the number of )
-#' @params maximal
+#' @description description
+#' @param stems character vector; stems to be processed
+#' @param cut_level numeric; he level at which stems should be cut (i.e. the number of diagnoses)
+#' @param maximal logical; true if the 'maximal' stem is to be considered for each record, or if it is to be limited
+#' to only records with the same number of diagnoses as cut_level
 #'
-#' @example
+#' @return a vector of the stems cut at the correct number of diagnoses
+#' @examples
 #' stems <- c('4;5-6;3-5-6;;', '4;5-4;;;', '5;5-6;3-5-6;3-5-6-7;')
+#' split_stem(stems, cut_level = 3, maximal = TRUE)
+#' @export
 
-# apply
 split_stem = function(stems, cut_level = 1, maximal = TRUE){
   # should have ; between stems
   if(!all(grepl(';', stems)))stop('all stems should have a ";" separator')
