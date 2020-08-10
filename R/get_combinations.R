@@ -5,9 +5,6 @@
 #' @name combinations
 #' @return
 #' @examples
-#' positions =
-#' get_combos()
-#' unique_combos()
 #'
 #' @export
 #'

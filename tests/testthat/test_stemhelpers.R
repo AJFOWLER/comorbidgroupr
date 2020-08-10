@@ -20,11 +20,11 @@ test_that('stems correctly split depending on maximal true or false', {
 })
 
 test_that("unique sets are the correct number",
-          {expect_equal(nrow(get_unique_sets(comorbid_column)), 4)}
+          {expect_equal(nrow(.get_unique_sets(comorbid_column)), 4)}
           )
 
 test_that("local positions are identified",
-          {expect_equal(get_locales(comorbid_column[1]), c(3,4))}
+          {expect_equal(.get_locales(comorbid_column[1]), c(3,4))}
           )
 
 test_that("Combinations if statement captures groups correctly",{

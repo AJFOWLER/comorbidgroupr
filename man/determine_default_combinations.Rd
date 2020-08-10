@@ -6,9 +6,9 @@
 \usage{
 determine_default_combinations(comorbid_column)
 }
-\arguments{
-\item{comorbid_column}{}
+\value{
+
 }
 \description{
-Determine default number of combinations
+thing to determine best number of combinations
 }

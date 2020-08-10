@@ -4,7 +4,7 @@
 \alias{stem_generator}
 \title{Generate disease stems}
 \usage{
-stem_generator(poscolumn, max_combos = 3, all_diseases)
+stem_generator(poscolumn, max_combos = 3, all_diseases, min_freq = 0)
 }
 \arguments{
 \item{poscolumn}{Vector of numbers which describe position of 1s in a comorbid string, generated using get_locales().}

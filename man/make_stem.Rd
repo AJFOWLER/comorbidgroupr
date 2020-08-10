@@ -4,12 +4,14 @@
 \alias{make_stem}
 \title{Make combinations of diseases ('stems') up to a maximum level.}
 \usage{
-make_stem(comorbid_column, max = "default")
+make_stem(comorbid_column, max = "default", min_freq = 0)
 }
 \arguments{
 \item{comorbid_column}{A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.}
 
 \item{max}{The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be used.}
+
+\item{min_freq}{Numeric; minimum frequency of code combinations to be included in the stem.}
 }
 \value{
 data.frame with four columns, one row per unique comorbid_string pattern, comorbid pattern, Frequency of pattern, positions of diseases, and full stem.
