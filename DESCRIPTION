@@ -1,0 +1,16 @@
+Package: comorbidgroupr
+Type: Package
+Title: Identify groups of comorbid diseases associated with outcomes
+Version: 0.0.1
+Author: person("Fowler", "Alexander James", email = "alexjfowler@gmail.com")
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: An implementation of combinatorial grouping.
+Depends: R (>= 3.6)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports:
+    ggplot2
+Suggests: 
+    testthat
+RoxygenNote: 7.1.1
