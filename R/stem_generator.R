@@ -70,16 +70,31 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
 
 # helper functions below #
 
+calculate_death_proportion <- function(unique_combinations, disease_list, outcomes){
+  #set up disease list
+  setups = get_list_pos(disease_list)
+  combos_outcome = as.data.frame(unique_combinations, stringsAsFactors = F)
+  combos_outcome[, c('freq', 'out')] = apply(unique_combinations, 1, function(x) {
+    # find all rows
+    all = reduce_set_overlap(sapply(x, FUN = setups))
+    # intersection of all and outcomes
+    outcome_bg = length(intersect(all, outcomes))
+    return(c(length(all), outcome_bg/length(all)))
+    })
+  #drop no outcomes
 
+  #reorder
+  return(combos_outcome[order(combos_outcome[,ncol(combos_outcome)], decreasing = F),])
+}
 
 calculate_group_frequency = function(unique_combinations, disease_list){
   # determine the frequency of each unique combinations of groups
   setups = get_list_pos(disease_list)
   # setups does initial processing of the disease list
-  combos_c = cbind(unique_combinations, apply(unique_combinations, 1, function(x) length(reduce_set_overlap(sapply(x, FUN = setups)))))
+  combos_frequency = cbind(unique_combinations, apply(unique_combinations, 1, function(x) length(reduce_set_overlap(sapply(x, FUN = setups)))))
   # find the count of records associated with each combination of diseases
   # return these ordered
-  return(combos_c[order(combos_c[,ncol(combos_c)], decreasing = F),])
+  return(combos_frequency[order(combos_frequency[,ncol(combos_frequency)], decreasing = F),])
 }
 
 reduce_set_overlap <- function(vector_list){Reduce(intersect, vector_list[lengths(vector_list)>0])}
