@@ -4,23 +4,30 @@
 \alias{make_stem}
 \title{Make combinations of diseases ('stems') up to a maximum level.}
 \usage{
-make_stem(comorbid_column, max = "default", min_freq = 0)
+make_stem(
+  comorbid_column,
+  max = "default",
+  min_freq = 0,
+  outcome_column = NULL
+)
 }
 \arguments{
 \item{comorbid_column}{A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.}
 
-\item{max}{The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be used.}
+\item{max}{The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be calculated using determine_default_combinations.}
 
-\item{min_freq}{Numeric; minimum frequency of code combinations to be included in the stem.}
+\item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If outcome_column is passed, min_freq is the minimum event rate per combination to be considered.}
+
+\item{outcome_column}{Numeric; one if outcome occurred and zero if outcome did not occur. Should be the same length as comorbid_column with each element relating to the same record as the comorbid_column. If outcome_column is passed, then the stem will be generated based on combinations with the highest event rate.}
 }
 \value{
-data.frame with four columns, one row per unique comorbid_string pattern, comorbid pattern, Frequency of pattern, positions of diseases, and full stem.
+data.frame with one row per unique comorbid_string pattern and columns: comorbid_string pattern, frequency of string pattern, positions within the pattern, stem and if frequency or outcome was used.
 }
 \description{
 Generate disease stems from a vector of character strings.
 }
 \examples{
 comorbid_column <- c('00010', '01000', '01110', '11101')
-make_stem(comorbid_column, max='default')
+make_stem(comorbid_column, max='default', min_freq = 0, outcome_column=NULL)
 
 }

@@ -4,7 +4,14 @@
 \alias{stem_generator}
 \title{Generate disease stems}
 \usage{
-stem_generator(poscolumn, max_combos = 3, all_diseases, min_freq = 0)
+stem_generator(
+  poscolumn,
+  max_combos = 3,
+  all_diseases,
+  outcome_positions = 0,
+  min_freq = 0,
+  tots
+)
 }
 \arguments{
 \item{poscolumn}{Vector of numbers which describe position of 1s in a comorbid string, generated using get_locales().}
@@ -12,10 +19,24 @@ stem_generator(poscolumn, max_combos = 3, all_diseases, min_freq = 0)
 \item{max_combos}{Number of maximum combinations to attempt.}
 
 \item{all_diseases}{List of positions associated with each disease, generated using get_disease_counts().}
+
+\item{outcome_positions}{Numeric vector where each number refers to a record that suffered a particular outcome.}
+
+\item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If outcome_column is passed, min_freq is the minimum event rate per combination to be considered.}
 }
 \value{
-main_stem for each pattern up to a maximum set in max_combos.
+a dataframe with the main_stem for each pattern up to a maximum set in max_combos.
 }
 \description{
-add something better here
+Generate disease stems on the basis of combination frequency (if no outcome_positions is passed) or the proportion of records associated with an outcome event (if outcome_positions is passed).
+}
+\examples{
+positions = list(c(1,2,3,4), c(3), c(3), c(2,3))
+disease_counts = list(c(1), c(1,4), c(1,2,3,4), c(1))
+
+stem_generator(poscolumn = positions, max_combos = 2, all_diseases = disease_counts, outcome_positions = 0) # generate stems on basis of frequency
+
+stem_generator(poscolumn = positions, max_combos = 2, all_diseases = disease_counts, outcome_positions = c(2,3,4)) # generate stems on basis of outcome
+
+
 }

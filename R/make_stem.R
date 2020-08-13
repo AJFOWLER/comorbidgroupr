@@ -1,24 +1,36 @@
 #' Make combinations of diseases ('stems') up to a maximum level.
 #' @description Generate disease stems from a vector of character strings.
 #' @param comorbid_column A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.
-#' @param max The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be used.
-#' @param min_freq Numeric; minimum frequency of code combinations to be included in the stem.
-#' @return data.frame with four columns, one row per unique comorbid_string pattern, comorbid pattern, Frequency of pattern, positions of diseases, and full stem.
+#' @param max The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be calculated using determine_default_combinations.
+#' @param min_freq Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If outcome_column is passed, min_freq is the minimum event rate per combination to be considered.
+#' @param outcome_column Numeric; one if outcome occurred and zero if outcome did not occur. Should be the same length as comorbid_column with each element relating to the same record as the comorbid_column. If outcome_column is passed, then the stem will be generated based on combinations with the highest event rate.
+#' @return data.frame with one row per unique comorbid_string pattern and columns: comorbid_string pattern, frequency of string pattern, positions within the pattern, stem and if frequency or outcome was used.
 #' @examples
 #' comorbid_column <- c('00010', '01000', '01110', '11101')
-#' make_stem(comorbid_column, max='default')
+#' make_stem(comorbid_column, max='default', min_freq = 0, outcome_column=NULL)
 #'
 #' @export
 
 make_stem = function(comorbid_column,
                      max='default',
-                     min_freq = 0){
+                     min_freq = 0,
+                     outcome_column = NULL){
   # first check data
   if(!check_strings_equal(comorbid_column)){stop('comorbid column must be the same length for each record')}
 
   if(!is.numeric(max) && max != 'default'){stop('max must be a single number or deafult')}
 
-  if(!is.numeric(min_freq))stop('min_freq must be a single number number')
+  if(!is.numeric(min_freq)){stop('min_freq must be a single number number')}
+
+  if(!is.null(outcome_column)){
+    if(!all(sort(unique(outcome_column)) == c(0,1))){stop('outcome column should be numeric ones or zeros')}
+
+    if(length(outcome_column) != length(comorbid_column)){stop('outcome column should have the same number of observations as comorbid_column')}
+
+    outcome_positions = which(outcome_column == 1)
+  }
+  else
+    {outcome_positions = 0}
 
   # identify unique combinations
   dt = .get_unique_sets(comorbid_column)
@@ -29,7 +41,7 @@ make_stem = function(comorbid_column,
   dt$position = apply(dt['comorbid_column'],1, .get_locales)
 
   if(max == 'default'){
-    max_combos = determine_default_combinations(comorbid_column)
+    max_combos = determine_default_combinations(comorbid_column, default = 2.5)
   }
   else{
     max_combos = max
@@ -37,8 +49,8 @@ make_stem = function(comorbid_column,
 
   cat('Using', max_combos, 'combinations \n')
 
-  dt$stem = stem_generator(dt$position, max_combos = max_combos, all_diseases, min_freq = min_freq)
-
+  dt$stem = stem_generator(dt$position, max_combos = max_combos, all_diseases, min_freq = min_freq, tots = length(comorbid_column))
+  dt$freq_or_outcome = ifelse(outcome_positions == 0, 'frequency', 'outcome')
   return(dt)
   }
 

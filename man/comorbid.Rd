@@ -20,7 +20,6 @@ get_disease_counts(comorbid_column)
 Convert and check comorbid strings, count positions within them to get disease counts.
 }
 \examples{
-
 comorbid_column <- c('00010', '01000', '01110', '11101')
 
 comorbid_factors <- as.factor(comorbid_column)
@@ -29,6 +28,6 @@ to_string(comorbid_factors) # make into string
 
 check_strings_equal(comorbid_column) # TRUE if strings all same length
 
-get_disease_counts(comorbid_column) # list of diseases counts
+get_disease_counts(comorbid_column) # list of counts by position in comorbid string
 
 }

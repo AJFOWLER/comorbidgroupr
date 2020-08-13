@@ -1,17 +1,26 @@
 #' Generate disease stems
-#' @description add something better here
+#' @description Generate disease stems on the basis of combination frequency (if no outcome_positions is passed) or the proportion of records associated with an outcome event (if outcome_positions is passed).
 #' @param poscolumn Vector of numbers which describe position of 1s in a comorbid string, generated using get_locales().
 #' @param max_combos Number of maximum combinations to attempt.
 #' @param all_diseases List of positions associated with each disease, generated using get_disease_counts().
-#' @returns main_stem for each pattern up to a maximum set in max_combos.
+#' @param min_freq Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If outcome_column is passed, min_freq is the minimum event rate per combination to be considered.
+#' @param outcome_positions Numeric vector where each number refers to a record that suffered a particular outcome.
+#' @returns a dataframe with the main_stem for each pattern up to a maximum set in max_combos.
+#' @examples
+#' positions = list(c(1,2,3,4), c(3), c(3), c(2,3))
+#' disease_counts = list(c(1), c(1,4), c(1,2,3,4), c(1))
+#'
+#' stem_generator(poscolumn = positions, max_combos = 2, all_diseases = disease_counts, outcome_positions = 0) # generate stems on basis of frequency
+#'
+#' stem_generator(poscolumn = positions, max_combos = 2, all_diseases = disease_counts, outcome_positions = c(2,3,4)) # generate stems on basis of outcome
+#'
 #'
 #' @export
 
-# needs examples
-# dealing with ties is hard
+# TIES
 
 stem_generator = function(poscolumn, max_combos = 3, all_diseases,
-                          min_freq = 0){
+                          outcome_positions = 0, min_freq = 0, tots){
   all_dis_count = sapply(all_diseases, length)
 
   # generate the base of the stem
@@ -47,7 +56,7 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
     }
 
     else{
-      combo_freq = calculate_group_frequency(combos, all_diseases)
+      combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = outcome_positions, min_freq=min_freq, tots = tots)
       # work through each row (this has been ordered ascending so last item should be most frequent)
       for(rows in 1:nrow(combo_freq)){
         # select relevant combos
@@ -66,45 +75,4 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
   }
   # return main_stem when all done.
   return(main_stem)
-}
-
-# helper functions below #
-
-calculate_death_proportion <- function(unique_combinations, disease_list, outcomes = 0){
-  #set up disease list
-  setups = get_list_pos(disease_list)
-  combos_outcome = as.data.frame(unique_combinations, stringsAsFactors = F)
-  combos_outcome[, c('freq', 'out')] = apply(unique_combinations, 1, function(x) {
-    # find all rows
-    all = reduce_set_overlap(sapply(x, FUN = setups))
-    # intersection of all and outcomes
-    outcome_bg = length(intersect(all, outcomes))
-    return(c(length(all), outcome_bg/length(all)))
-    })
-  #drop no outcomes
-
-  #reorder
-  return(combos_outcome[order(combos_outcome[,ncol(combos_outcome)], decreasing = F),])
-}
-
-calculate_group_frequency = function(unique_combinations, disease_list){
-  # determine the frequency of each unique combinations of groups
-  setups = get_list_pos(disease_list)
-  # setups does initial processing of the disease list
-  combos_frequency = cbind(unique_combinations, apply(unique_combinations, 1, function(x) length(reduce_set_overlap(sapply(x, FUN = setups)))))
-  # find the count of records associated with each combination of diseases
-  # return these ordered
-  return(combos_frequency[order(combos_frequency[,ncol(combos_frequency)], decreasing = F),])
-}
-
-reduce_set_overlap <- function(vector_list){Reduce(intersect, vector_list[lengths(vector_list)>0])}
-
-get_list_pos <- function(list){
-  get_pos <- function(pos){
-    if(pos == 0){
-      return()
-    }
-    else{
-      return(list[[pos]])}
-  }
 }
