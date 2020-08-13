@@ -70,7 +70,7 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
 
 # helper functions below #
 
-calculate_death_proportion <- function(unique_combinations, disease_list, outcomes){
+calculate_death_proportion <- function(unique_combinations, disease_list, outcomes = 0){
   #set up disease list
   setups = get_list_pos(disease_list)
   combos_outcome = as.data.frame(unique_combinations, stringsAsFactors = F)
