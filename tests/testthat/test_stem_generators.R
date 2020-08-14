@@ -6,28 +6,23 @@ equal_strings = c('1111', '0010', '0010', '0110')
 fac_ml = factor(c('a','b','c','d','f'))
 chr = c('a', 'b', 'a', 'b', 'b')
 
-# disease counts relevant to equal strings
-disease_counts = list(c(1), c(1,4), c(1,2,3,4), c(1))
-
-# positions relevant to equal strings at pair level
-positions = list(c(1,2,3,4), c(3), c(3), c(2,3))
-# unique positions
-unique_pos = structure(c(1, 1, 1, 2, 2, 3, 2, 3, 4, 3, 4, 4), .Dim = c(6L,
-                                                          2L))
 # outcomes
 outcomes = c(1,0,0,1)
-
-#positions relevant to equal strings
 
 test_that("error messages are captured in make_stem", {
   expect_error(make_stem(equal_strings,max = 'a'), 'max must be a single number or deafult', fixed = T)
   expect_error(make_stem(unequal_strings, max='a'), 'comorbid column must be the same length for each record', fixed=T)
 })
 
-test_that("intersection over multiple sets works correctly", {
-  expect_equal(reduce_set_overlap(list(fac_ml, chr)), c("a", "b"))
+test_that("frequency or outcome are accurately reported", {
+  expect_equal(make_stem(equal_strings, outcome_column =  NULL)[1,'freq_or_outcome'], 'frequency')
+  expect_equal(make_stem(equal_strings, outcome_column = outcomes)[1,'freq_or_outcome'], 'outcome')
 })
 
-test_that("list position function works", {
-  expect_equal(get_list_pos(disease_counts)(3), c(1,2,3,4))
+test_that('make stem works accurately', {
+  expect_equal(make_stem(equal_strings, min_freq = 0.25)[2,'stem'], "3;2-3;;")
+  expect_equal(make_stem(equal_strings, min_freq = 0.60)[3,'stem'], "3;;")
+  expect_equal(make_stem(equal_strings, min_freq = 0)[3,'stem'], "3;2-3;2-3-4;1-2-3-4")
+
 })
+

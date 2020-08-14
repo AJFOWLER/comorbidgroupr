@@ -4,22 +4,22 @@
 \alias{combinations}
 \alias{unique_combos}
 \alias{get_combos}
-\title{Get all patterns of diseases.}
+\title{Get all patterns of diseases}
 \usage{
 unique_combos(positions, combinations = 2)
 
 get_combos(positions, combinations = 2)
 }
 \arguments{
-\item{combinations}{Maximum number of disease combinations to be generated (default = 2)}
+\item{positions}{Vector of all positions for each element of \code{comorbid_column} generated using \code{.get_locales}.}
 
-\item{positons}{Vector of all positions for each element of comorbid_column generated using .get_locales}
+\item{combinations}{Maximum number of disease combinations to be generated (\code{default = 2}).}
 }
 \value{
-matrix of unique combinations (if unique_combos, else all combinations)
+matrix of unique combinations (if using \code{unique_combos()}, else all combinations).
 }
 \description{
-Return combinations of different patterns of diseases to a specified number of combinations
+Return combinations of different patterns of diseases to a specified number of combinations.
 }
 \examples{
 positions = list(c(1,2,3,4), c(3), c(3), c(2,3))

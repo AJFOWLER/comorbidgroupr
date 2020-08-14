@@ -3,9 +3,9 @@
 #' @description Determine the maximum number of combinations to be included.
 #'
 #' @param comorbid_column A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.
-#' @param default A number representing what proportion of diagnostic counts should be included . i.e. if 1 in 100 records have four or more diagnoses, but 3 in 100 have three or more, then the selected maximum combinations would be 3 if the default (2.5) is maintained.
+#' @param default A number representing what proportion of diagnostic counts should be included . i.e. if 1 in 100 records have four or more diagnoses, but 3 in 100 have three or more, then the selected maximum combinations would be 3 if the \code{default} (2.5) is maintained.
 #'
-#' @return Number of diagnosis counts that are present in the selected proportion of records (default is 1 in 50).
+#' @return Number of diagnosis counts that are present in the selected proportion of records (\code{default} is 1 in 50).
 #'
 #' @examples
 #' comorbid_column <- c('00010', '01000', '01110', '11101')

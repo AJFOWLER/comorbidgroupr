@@ -1,4 +1,4 @@
-#' Helper functions to check comorbid_strings and get count position
+#' Helper functions to check strings and get count position
 #'
 #' @description Convert and check comorbid strings, count positions within them to get disease counts.
 #'

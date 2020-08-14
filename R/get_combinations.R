@@ -1,9 +1,9 @@
-#' Get all patterns of diseases.
-#' @description Return combinations of different patterns of diseases to a specified number of combinations
+#' Get all patterns of diseases
+#' @description Return combinations of different patterns of diseases to a specified number of combinations.
 #'
-#' @param positons Vector of all positions for each element of comorbid_column generated using .get_locales
-#' @param combinations Maximum number of disease combinations to be generated (default = 2)
-#' @return matrix of unique combinations (if unique_combos, else all combinations)
+#' @param positions Vector of all positions for each element of \code{comorbid_column} generated using \code{.get_locales}.
+#' @param combinations Maximum number of disease combinations to be generated (\code{default = 2}).
+#' @return matrix of unique combinations (if using \code{unique_combos()}, else all combinations).
 #' @examples
 #' positions = list(c(1,2,3,4), c(3), c(3), c(2,3))
 #' unique_combos(positions, combinations = 2)

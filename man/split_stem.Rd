@@ -2,25 +2,26 @@
 % Please edit documentation in R/split_stem.R
 \name{split_stem}
 \alias{split_stem}
-\title{Process stems after deriving}
+\title{Process disease stems}
 \usage{
 split_stem(stems, cut_level = 1, maximal = TRUE)
 }
 \arguments{
-\item{stems}{character vector; stems to be processed}
+\item{stems}{character vector of stems to be processed which should each be separated by a semi-colon (\code{;}).}
 
-\item{cut_level}{numeric; he level at which stems should be cut (i.e. the number of diagnoses)}
+\item{cut_level}{number indicating the level at which stems should be cut (i.e. the number of diagnoses).}
 
-\item{maximal}{logical; true if the 'maximal' stem is to be considered for each record, or if it is to be limited
-to only records with the same number of diagnoses as cut_level}
+\item{maximal}{A logical that true if the 'maximal' stem is to be considered for each record, or if it is to be limited to only records with the same number of diagnoses as \code{cut_level}, default of \code{TRUE}.}
 }
 \value{
-a vector of the stems cut at the correct number of diagnoses
+A vector of the stems cut at the correct number of diagnoses.
 }
 \description{
-description
+Cut disease stems for different number of diseases.
 }
 \examples{
+
 stems <- c('4;5-6;3-5-6;;', '4;5-4;;;', '5;5-6;3-5-6;3-5-6-7;')
+
 split_stem(stems, cut_level = 3, maximal = TRUE)
 }

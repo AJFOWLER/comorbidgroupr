@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_stem.R
 \name{make_stem}
 \alias{make_stem}
-\title{Make combinations of diseases ('stems') up to a maximum level.}
+\title{Make combinations of diseases ('stems') up to a maximum level}
 \usage{
 make_stem(
   comorbid_column,
@@ -14,20 +14,22 @@ make_stem(
 \arguments{
 \item{comorbid_column}{A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.}
 
-\item{max}{The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be calculated using determine_default_combinations.}
+\item{max}{The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be calculated using \code{determine_default_combinations()}.}
 
-\item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If outcome_column is passed, min_freq is the minimum event rate per combination to be considered.}
+\item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.}
 
-\item{outcome_column}{Numeric; one if outcome occurred and zero if outcome did not occur. Should be the same length as comorbid_column with each element relating to the same record as the comorbid_column. If outcome_column is passed, then the stem will be generated based on combinations with the highest event rate.}
+\item{outcome_column}{A numeric vector one if outcome occurred and zero if outcome did not occur. Should be the same length as \code{comorbid_column} with each element relating to the same record as the \code{comorbid_column}. If \code{outcome_column} is passed, then the stem will be generated based on combinations with the highest event rate.}
 }
 \value{
-data.frame with one row per unique comorbid_string pattern and columns: comorbid_string pattern, frequency of string pattern, positions within the pattern, stem and if frequency or outcome was used.
+data.frame with one row per unique \code{comorbid_string} pattern and columns: \code{comorbid_string} pattern, frequency of string pattern, positions within the pattern, stem and if frequency or outcome was used.
 }
 \description{
 Generate disease stems from a vector of character strings.
 }
 \examples{
+
 comorbid_column <- c('00010', '01000', '01110', '11101')
+
 make_stem(comorbid_column, max='default', min_freq = 0, outcome_column=NULL)
 
 }

@@ -5,7 +5,7 @@
 \alias{to_string}
 \alias{check_strings_equal}
 \alias{get_disease_counts}
-\title{Helper functions to check comorbid_strings and get count position}
+\title{Helper functions to check strings and get count position}
 \usage{
 to_string(comorbid_column)
 
