@@ -2,13 +2,24 @@
 % Please edit documentation in R/determine_default_combinations.R
 \name{determine_default_combinations}
 \alias{determine_default_combinations}
-\title{Determine default number of combinations}
+\title{Determine maximum combinations}
 \usage{
-determine_default_combinations(comorbid_column)
+determine_default_combinations(comorbid_column, default = 2.5)
+}
+\arguments{
+\item{comorbid_column}{A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.}
+
+\item{default}{A number representing what proportion of diagnostic counts should be included . i.e. if 1 in 100 records have four or more diagnoses, but 3 in 100 have three or more, then the selected maximum combinations would be 3 if the \code{default} (2.5) is maintained.}
 }
 \value{
-
+Number of diagnosis counts that are present in the selected proportion of records (\code{default} is 1 in 50).
 }
 \description{
-thing to determine best number of combinations
+Determine the maximum number of combinations to be included.
+}
+\examples{
+comorbid_column <- c('00010', '01000', '01110', '11101')
+
+determine_default_combinations(comorbid_column)
+
 }

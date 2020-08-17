@@ -1,14 +1,27 @@
-#' Get all combinations and unique combinations
-#' @description thing to do
-#' @param positons
-#' @param combinations = 2
-#' @name combinations
-#' @return
+#' Get all patterns of diseases
+#' @description Return combinations of different patterns of diseases to a specified number of combinations.
+#'
+#' @param positions Vector of all positions for each element of \code{comorbid_column} generated using \code{.get_locales}.
+#' @param combinations Maximum number of disease combinations to be generated (\code{default = 2}).
+#' @return matrix of unique combinations (if using \code{unique_combos()}, else all combinations).
 #' @examples
+#' positions = list(c(1,2,3,4), c(3), c(3), c(2,3))
+#' unique_combos(positions, combinations = 2)
 #'
 #' @export
-#'
+#' @name combinations
 NULL
+
+#' @rdname combinations
+unique_combos = function(positions, combinations=2){
+  # lapply to positions the get_combos function
+  all_combos = lapply(positions, function(x) get_combos(x, combinations = combinations))
+  # remove NA lists (from error capture in get_combos)
+  all_combos_nan = all_combos[!is.na(all_combos)]
+  # generate matrix of unique combinations
+  unique_combos = unique(do.call(rbind, all_combos_nan))
+  return(unique_combos)
+}
 
 #' @rdname combinations
 get_combos = function(positions, combinations = 2){
@@ -25,14 +38,4 @@ get_combos = function(positions, combinations = 2){
     # generate all combinations if n>m
     return(t(utils::combn(position_, combinations)))
   }
-}
-#' @rdname combinations
-unique_combos = function(positions, combo_numbers=2){
-  # lapply to positions the get_combos function
-  all_combos = lapply(positions, function(x) get_combos(x, combinations = combo_numbers))
-  # remove NA lists (from error capture in get_combos)
-  all_combos_nan = all_combos[!is.na(all_combos)]
-  # generate matrix of unique combinations
-  unique_combos = unique(do.call(rbind, all_combos_nan))
-  return(unique_combos)
 }

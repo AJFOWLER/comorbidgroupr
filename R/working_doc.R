@@ -14,6 +14,21 @@
 # o_dat = data.frame('comorbid'=comorbid_string)
 # # #
 #  o_dat = merge(o_dat, dat[, c('comorbid_column', 'stem')], by.x = 'comorbid', by.y = 'comorbid_column', all.x=T )
+#equal_strings = c('1100','1100', '1110','0011')
+#a = sapply(equal_strings, .get_locales, USE.NAMES = F)
+#t = unique_combos(a, 3)
+#all_dis = get_disease_counts(equal_strings)
+
+# old
+#calculate_group_frequency__ = function(unique_combinations, disease_list){
+  # determine the frequency of each unique combinations of groups
+#  setups = get_list_pos(disease_list)
+  # setups does initial processing of the disease list
+#  combos_frequency = cbind(unique_combinations, apply(unique_combinations, 1, function(x) length(reduce_set_overlap(sapply(x, FUN = setups, simplify = F)))))
+  # find the count of records associated with each combination of diseases
+  # return these ordered
+#  return(combos_frequency[order(combos_frequency[,ncol(combos_frequency)], decreasing = F),])
+#}
 # # #
 #
 #  o_dat$maxstem3 = unlist(sapply(o_dat$stem, get_stem_maximal_split, 3))

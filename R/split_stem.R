@@ -1,20 +1,21 @@
-#' Process stems after deriving
-#' @description description
-#' @param stems character vector; stems to be processed
-#' @param cut_level numeric; he level at which stems should be cut (i.e. the number of diagnoses)
-#' @param maximal logical; true if the 'maximal' stem is to be considered for each record, or if it is to be limited
-#' to only records with the same number of diagnoses as cut_level
+#' Process disease stems
+#' @description Cut disease stems for different number of diseases.
+#' @param stems character vector of stems to be processed which should each be separated by a semi-colon (\code{;}).
+#' @param cut_level number indicating the level at which stems should be cut (i.e. the number of diagnoses).
+#' @param maximal A logical that true if the 'maximal' stem is to be considered for each record, or if it is to be limited to only records with the same number of diagnoses as \code{cut_level}, default of \code{TRUE}.
 #'
-#' @return a vector of the stems cut at the correct number of diagnoses
+#' @return A vector of the stems cut at the correct number of diagnoses.
 #' @examples
+#'
 #' stems <- c('4;5-6;3-5-6;;', '4;5-4;;;', '5;5-6;3-5-6;3-5-6-7;')
+#'
 #' split_stem(stems, cut_level = 3, maximal = TRUE)
 #' @export
 
 split_stem = function(stems, cut_level = 1, maximal = TRUE){
   # should have ; between stems
   if(!all(grepl(';', stems)))stop('all stems should have a ";" separator')
-  if(!is.logical(maximal))stop('maximal should be a logical of either TRUE/FALSE')
+  if(!is.logical(maximal))stop('maximal should be a logical of either TRUE or FALSE')
   if(!is.numeric(cut_level))stop('cut_level should be a numeric value')
 
   cut_level <- round(cut_level, digits = 0)
