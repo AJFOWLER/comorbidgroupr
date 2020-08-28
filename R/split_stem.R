@@ -20,7 +20,12 @@ split_stem = function(stems, cut_level = 1, maximal = TRUE){
 
   cut_level <- round(cut_level, digits = 0)
 
-  splitted_stems = do.call(rbind, strsplit(stems, ';'))
+
+  split_stems = strsplit(stems, ';')
+  len = max(sapply(split_stems, length))
+  # pad the split stems to make consistent length
+  split_stems = lapply(split_stems, function(x) c(x, rep('', len - length(x))))
+  splitted_stems = do.call(rbind,split_stems)
 
   if(isFALSE(maximal)){
     # if maximal is not wanted, just cut at that level (equates with column in matrix)
