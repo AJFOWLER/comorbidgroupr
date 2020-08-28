@@ -8,13 +8,16 @@
 #test_dat = read.csv("C:/Users/Alex/Dropbox/PhD/QoL/Routine_PROMS_data/HIP_PROMS/Hip_201718.csv")
 #test_dat
 # names(test_dat)
-# comorbid_string = do.call(paste0, test_dat[,13:24])
-# comorbid_string = gsub('9', '0', comorbid_string)
-# dat = make_stem(comorbid_string, max = 6)
-# o_dat = data.frame('comorbid'=comorbid_string)
+#comorbid_string = do.call(paste0, test_dat[,13:24])
+#comorbid_string = gsub('9', '0', comorbid_string)
+#dtt = make_stem(comorbid_string, max = 6)
+#dtt$split_stem = split_stem(dtt$stem, cut_level = 2)
+#o_dat = data.frame('comorbid'=comorbid_string)
 # # #
-#  o_dat = merge(o_dat, dat[, c('comorbid_column', 'stem')], by.x = 'comorbid', by.y = 'comorbid_column', all.x=T )
+#o_dat = merge(o_dat, dat[, c('comorbid_column', 'stem')], by.x = 'comorbid', by.y = 'comorbid_column', all.x=T )
+#o_dat$splitted = split_stem(o_dat$stem, cut_level =2)
 #equal_strings = c('1100','1100', '1110','0011')
+
 #a = sapply(equal_strings, .get_locales, USE.NAMES = F)
 #t = unique_combos(a, 3)
 #all_dis = get_disease_counts(equal_strings)
