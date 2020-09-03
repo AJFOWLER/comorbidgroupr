@@ -12,3 +12,8 @@ test_that('stems correctly split depending on maximal true or false', {
   (expect_equal(split_stem(stems, cut_level = 3, maximal=TRUE), c('3-5-6','5-4','3-5-6')))
   (expect_equal(split_stem(stems, cut_level = 3, maximal=FALSE), c('3-5-6','','3-5-6')))
 })
+
+test_that('stem returns vector of equivalent length of stems', {
+  expect_equal(length(split_stem(stems, cut_level = 2, maximal = TRUE)),3)
+  expect_equal(length(split_stem(stems = c(';;;;', stems), cut_level = 2, maximal = TRUE)), 4)
+})

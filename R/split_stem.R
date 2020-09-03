@@ -38,13 +38,16 @@ split_stem = function(stems, cut_level = 1, maximal = TRUE){
     missing = which(core=='')
     if(length(missing) == 1){
       additional = .return_tail(splitted_stems[missing,])
-    }
+      core[missing] = ifelse(!length(additional), NA, additional)
+      }
     else{
-      additional = apply(splitted_stems[core == '', ], 1, .return_tail)
-    }
-    core[missing] = additional
+      additional = apply(splitted_stems[missing, ], 1, .return_tail)
+      core[missing] = additional
+      }
+    #replace empty character with NA
+    core[core == "character(0)"] <- NA
 
-    return(core)}
+    return(unlist(core))}
 }
 
 .return_tail = function(x){
