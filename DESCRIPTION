@@ -1,6 +1,6 @@
 Package: comorbidgroupr
 Type: Package
-Title: Identify groups of comorbid diseases associated with outcomes
+Title: Identify Groups of Comorbid Diseases Associated with Outcomes
 Version: 0.1.0
 Author: person("Fowler", "Alexander James", email = "alexjfowler@gmail.com")
 Maintainer: The package maintainer <yourself@somewhere.net>
