@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^\.github$
 ^data-raw$
+out_col.csv
+cc_col.csv
