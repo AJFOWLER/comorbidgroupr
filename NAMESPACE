@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("stats", "aggregate", "qnorm")
 importFrom("utils", "tail")
-importFrom("ggplot2", "ggplot", "aes", "geom_hline", "geom_point","theme", "theme_bw", "geom_line", "coord_cartesian", "scale_y_continuous", "xlab", 'guides', 'labs')
+importFrom("ggplot2", "ggplot", "aes", "geom_hline", "geom_point","theme", "theme_bw", "geom_line", "coord_cartesian", "scale_y_continuous", "xlab", "scale_colour_manual")
 importFrom("funnelR", "funscore", "fundata")

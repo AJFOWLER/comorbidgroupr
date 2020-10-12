@@ -93,10 +93,10 @@ stem_funnel_plot = function(comorbid_column,
 
    #calculate outliers
    outliers_dat <- funnelR::funscore(clean_output, benchmark = bl, alpha=0.95, alpha2 = 0.975, method='approximate')
-
+   cols <- c('#E6D72A', '#375E97')
    g1 = ggplot(aes(x=d, y=r), data=outliers_dat[outliers_dat$r >0 & outliers_dat$d <= max_x,])+
        geom_point(colour='black', size = 4+0.5, shape = 21)+
-       geom_point(size = 4, alpha=0.3, aes(fill = stem, colour = score))+
+       geom_point(size = 4, alpha=0.3, aes(group = stem, colour = score))+
        xlab('Frequency')+
        geom_line(aes(x = d, y = up), data = lim_data[lim_data$d <= max_x,], colour='red',     linetype='dotted') +
        geom_line(aes(x = d, y = lo), data = lim_data[lim_data$d <= max_x,], colour='red',     linetype='dotted') +
@@ -106,12 +106,11 @@ stem_funnel_plot = function(comorbid_column,
        coord_cartesian(ylim=c(0,1)) +
        scale_y_continuous(breaks=seq(0, 1, 0.1))+
        theme_bw() +
-       labs(colour = 'Within 95% control boundries?')+
-       guides(fill = FALSE)
+       scale_colour_manual(values = cols, labels = c('Within', 'Outside'), name = 'Within 95% control limits?')
 
    # return what is within 95% CI
    outliers_dat <- outliers_dat[,-5]
    names(outliers_dat) <- c('stem', 'total_number', 'number_events', 'rate', 'inside_95%', 'inside_97.5%')
-
+   cat('Note that this includes all data, including that excluded from the plot with max_x \n')
    return(list(funnel_plot = g1, funnel_data = outliers_dat[order(-outliers_dat$rate),]))
 }
