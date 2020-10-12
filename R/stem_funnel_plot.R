@@ -34,7 +34,7 @@ stem_funnel_plot = function(comorbid_column,
                             maximal = TRUE,
                             max_x = NULL,
                             dis_names = NULL){
-   if(!all(sort(unique(outcome_column)) == c(0,1))){stop('outcome column should be numeric ones and zeros')}
+   if(suppressWarnings(!all(sort(unique(outcome_column)) == c(0,1)))){stop('outcome column should be numeric ones and zeros')}
 
    if(length(outcome_column) != length(comorbid_column)){stop('outcome column should have the same number of observations as comorbid_column')}
 
