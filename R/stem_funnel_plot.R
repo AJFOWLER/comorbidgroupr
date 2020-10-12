@@ -106,7 +106,9 @@ stem_funnel_plot = function(comorbid_column,
        coord_cartesian(ylim=c(0,1)) +
        scale_y_continuous(breaks=seq(0, 1, 0.1))+
        theme_bw() +
-       theme(legend.position = 'none')
+       labs(colour = 'Within 95% control boundries?')+
+       guides(fill = FALSE)
+
    # return what is within 95% CI
    outliers_dat <- outliers_dat[,-5]
    names(outliers_dat) <- c('stem', 'total_number', 'number_events', 'rate', 'inside_95%', 'inside_97.5%')
