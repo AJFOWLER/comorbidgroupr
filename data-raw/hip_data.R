@@ -1,4 +1,4 @@
-## code to prepare `hip_data` dataset goes here
+## code to prepare `hip_data` dataset and names of diseases
 #'
 #'
 #'
@@ -6,6 +6,8 @@
 
 # read hip data in
 # hip_data = read.csv('data-raw/raw_hip.csv', stringsAsFactors = F, header = TRUE)
+# disease_names <- names(hip_data)
+# usethis::use_data(disease_names, overwrite=TRUE)
 
 # columns are diseases (1:11) and column 12 is outcome of 'suffered complications'
 # 1 indicates 'yes' and 0 'no'

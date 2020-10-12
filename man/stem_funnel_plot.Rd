@@ -10,7 +10,8 @@ stem_funnel_plot(
   cut_level = 2,
   use_outcome = FALSE,
   maximal = TRUE,
-  max_x = NULL
+  max_x = NULL,
+  dis_names = NULL
 )
 }
 \arguments{
@@ -25,12 +26,14 @@ stem_funnel_plot(
 \item{maximal}{A logical that true if the 'maximal' stem is to be considered for each record, or if it is to be limited to only records with the same number of diagnoses as \code{cut_level}, default of \code{TRUE}.}
 
 \item{max_x}{A number indicating the maximum frequency on the x axis, if left \code{NULL} then the maximum in the observed data will be used.}
+
+\item{dis_names}{A list of disease names associated with each position of the comorbid string. If null, then the simple string is returned.}
 }
 \value{
-A list, first element is a funnel plot with associated 95\% and 99\% control limits, second element is the underlying data.
+A list, first element is a ggplot object; a funnel plot with associated 95\% and 99\% control limits, second element is the underlying data.
 }
 \description{
-Create a funnel plot for a binary outcome for each combination of diseases.
+Create a funnel plot for a binary outcome for each combination of diseases. Makes heavy use of the \code{\link[funnelR:fundata]{funnelR:fundata}} and \code{\link[funnelR:funscore]{funnelR:funscore}} functionality from the \href{https://cran.r-project.org/web/packages/funnelR/funnelR.pdf}{funnelR} package.
 }
 \examples{
 
@@ -42,6 +45,8 @@ stem_funnel_plot(comorbid_column = comorbid_column,
 outcome_column = outcome_column,
 use_outcome = FALSE,
 maximal = TRUE,
-max_x = NULL)
+max_x = NULL,
+dis_names = c('heart disease', 'hypertension', 'chronic kidney disease', 'cancer')
+)
 
 }
