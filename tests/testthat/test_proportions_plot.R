@@ -22,5 +22,5 @@ test_that('correct outliers are identified and named', {
   expect_equal(length(test_plot), 2)
   expect_equal(length(which(test_plot$funnel_data$`inside_95%` == 'Extreme')), 6)
   named_test_plot <- stem_funnel_plot(comorbid_column = hip_data$comorbid_string, outcome_column = hip_data$outcome, cut_level = 3, dis_names = disease_names)
-  expect_equal(named_test_plot$funnel_data$stem[[1]], 'Lung.Disease | Diabetes | Cancer')
+  expect_equal(named_test_plot$funnel_data$stem[[1]], 'Lung.Disease|Diabetes|Cancer')
   })
