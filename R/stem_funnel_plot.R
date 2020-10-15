@@ -1,6 +1,6 @@
 #' Funnel plot of combinations at a given stem level.
 #'
-#' @description Create a funnel plot for a binary outcome for each combination of diseases. Makes heavy use of the \code{\link[funnelR::fundata]{funnelR:fundata}} and \code{\link[funnelR::funscore]{funnelR:funscore}} functionality from the \href{https://cran.r-project.org/web/packages/funnelR/funnelR.pdf}{funnelR} package.
+#' @description Create a funnel plot for a binary outcome for each combination of diseases. Uses functionality provided by the \code{\link[funnelR]{fundata}} and \code{\link[funnelR]{funscore}} functions in the \href{https://cran.r-project.org/web/packages/funnelR/funnelR.pdf}{funnelR} package.
 #'
 #' @param comorbid_column A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.
 #' @param outcome_column A numeric vector one if outcome occurred and zero if outcome did not occur. Should be the same length as \code{comorbid_column} with each element relating to the same record as the \code{comorbid_column}. If \code{outcome_column} is passed, then the stem will be generated based on combinations with the highest event rate.
@@ -54,8 +54,7 @@ stem_funnel_plot = function(comorbid_column,
    }
 
    # setup NULL objects for name space
-   outcome_column.1 <- outcome_column.2 <- rate <- dt.cut_stem <- NULL
-   seq_ <- number.l_lim1 <- number.u_lim1 <- number.l_lim2 <- number.u_lim2 <- baseline <-  NULL
+   d <- r <- stem <- score <- up <- lo <- up2 <- lo2 <- benchmark <- bl <- NULL
 
    dt = data.frame('comorbid' = comorbid_column)
    # merge stem by comorbid disease pattern

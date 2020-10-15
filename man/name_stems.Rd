@@ -4,15 +4,17 @@
 \alias{name_stems}
 \title{Change split stems into named diseases}
 \usage{
-name_stems(split_stems, dis_names)
+name_stems(split_stems, dis_names, separator = "|")
 }
 \arguments{
 \item{split_stems}{A vector of split stems outputted by \code{\link{split_stem}}}
 
 \item{dis_names}{A list of disease names associated with each position as used in \code{\link{get_disease_counts}}}
+
+\item{separator}{Character to divide diseases in a stem, default of '|'}
 }
 \value{
-A character vector of split stems converted to names, with each disease in a stem separated by |.
+A character vector of split stems converted to names, with each disease in a stem separated by defined separator.
 }
 \description{
 Name stems once they have been split

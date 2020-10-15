@@ -4,10 +4,14 @@
 \alias{summary.stem}
 \title{Summary method for stem}
 \usage{
-\method{summary}{stem}(stem, ...)
+\method{summary}{stem}(object, dis_names = NULL, ...)
 }
 \arguments{
 \item{object}{An object created by make_stem}
+
+\item{dis_names}{A list of disease names associated with each position as used in \code{\link{get_disease_counts}}.}
+
+\item{...}{Other arguments}
 }
 \description{
 Summary method for stem

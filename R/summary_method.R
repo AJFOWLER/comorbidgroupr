@@ -1,10 +1,12 @@
 #' Summary method for stem
 #' @param object An object created by make_stem
+#' @param dis_names A list of disease names associated with each position as used in \code{\link{get_disease_counts}}.
+#' @param ... Other arguments
 #'
 #' @export
 
 # neater summary of stems when created
-summary.stem <- function(object, dis_names = NULL, ...){
+summary.stem <- function(object,dis_names = NULL, ...){
  cat('Stems generatred using::', tools::toTitleCase(object[1,'freq_or_outcome']), '\n')
  cat('Unique comorbid strings:', nrow(object), '\n')
  cat('\n')
