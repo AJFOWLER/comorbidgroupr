@@ -33,7 +33,7 @@ stem_funnel_plot(
 A list, first element is a ggplot object; a funnel plot with associated 95\% and 99\% control limits, second element is the underlying data.
 }
 \description{
-Create a funnel plot for a binary outcome for each combination of diseases. Makes heavy use of the \code{\link[funnelR:fundata]{funnelR:fundata}} and \code{\link[funnelR:funscore]{funnelR:funscore}} functionality from the \href{https://cran.r-project.org/web/packages/funnelR/funnelR.pdf}{funnelR} package.
+Create a funnel plot for a binary outcome for each combination of diseases. Makes heavy use of the \code{\link[funnelR::fundata]{funnelR:fundata}} and \code{\link[funnelR::funscore]{funnelR:funscore}} functionality from the \href{https://cran.r-project.org/web/packages/funnelR/funnelR.pdf}{funnelR} package.
 }
 \examples{
 
