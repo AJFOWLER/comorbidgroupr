@@ -16,3 +16,11 @@ test_that('capture other errors',{
   expect_error(stem_funnel_plot(comorbid_column, outcome_column, use_outcome = FALSE, maximal = TRUE, max_x = TRUE), 'max_x should be either NULL or a number', fixed=T)
   expect_error(stem_funnel_plot(comorbid_column, outcome_column, use_outcome = TRUE, maximal = TRUE, max_x = 'a'),  'max_x should be either NULL or a number', fixed=T)
 })
+
+test_that('correct outliers are identified and named', {
+  test_plot <- stem_funnel_plot(comorbid_column = hip_data$comorbid_string, outcome_column = hip_data$outcome, cut_level = 2)
+  expect_equal(length(test_plot), 2)
+  expect_equal(length(which(test_plot$funnel_data$`inside_95%` == 'Extreme')), 6)
+  named_test_plot <- stem_funnel_plot(comorbid_column = hip_data$comorbid_string, outcome_column = hip_data$outcome, cut_level = 3, dis_names = disease_names)
+  expect_equal(named_test_plot$funnel_data$stem[[1]], 'Lung.Disease|Diabetes|Cancer')
+  })

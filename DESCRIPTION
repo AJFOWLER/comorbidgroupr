@@ -10,7 +10,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    ggplot2
+    ggplot2,
+    funnelR
 Suggests: 
     testthat
 RoxygenNote: 7.1.1

@@ -1,6 +1,6 @@
 #' Funnel plot of combinations at a given stem level.
 #'
-#' @description Create a funnel plot for a binary outcome for each combination of diseases.
+#' @description Create a funnel plot for a binary outcome for each combination of diseases. Uses functionality provided by the \code{\link[funnelR]{fundata}} and \code{\link[funnelR]{funscore}} functions in the \href{https://cran.r-project.org/web/packages/funnelR/funnelR.pdf}{funnelR} package.
 #'
 #' @param comorbid_column A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.
 #' @param outcome_column A numeric vector one if outcome occurred and zero if outcome did not occur. Should be the same length as \code{comorbid_column} with each element relating to the same record as the \code{comorbid_column}. If \code{outcome_column} is passed, then the stem will be generated based on combinations with the highest event rate.
@@ -8,7 +8,8 @@
 #' @param use_outcome A logical indicating if stem derivation should be based on outcome rates or on frequency, defaults to \code{FALSE}.
 #' @param maximal A logical that true if the 'maximal' stem is to be considered for each record, or if it is to be limited to only records with the same number of diagnoses as \code{cut_level}, default of \code{TRUE}.
 #' @param max_x A number indicating the maximum frequency on the x axis, if left \code{NULL} then the maximum in the observed data will be used.
-#' @return A list, first element is a funnel plot with associated 95\% and 99\% control limits, second element is the underlying data.
+#' @param dis_names A list of disease names associated with each position of the comorbid string. If null, then the simple string is returned.
+#' @return A list, first element is a ggplot object; a funnel plot with associated 95\% and 99\% control limits, second element is the underlying data.
 #' @examples
 #'
 #' comorbid_column <- c('1110', '0010', '0010', '0110')
@@ -19,24 +20,21 @@
 #' outcome_column = outcome_column,
 #' use_outcome = FALSE,
 #' maximal = TRUE,
-#' max_x = NULL)
+#' max_x = NULL,
+#' dis_names = c('heart disease', 'hypertension', 'chronic kidney disease', 'cancer')
+#' )
 #'
 #' @export
 #'
-
-# names of diseases
-
-# axis titles
-
-# name those outside limits / get those outside limits
 
 stem_funnel_plot = function(comorbid_column,
                             outcome_column,
                             cut_level = 2,
                             use_outcome = FALSE,
                             maximal = TRUE,
-                            max_x = NULL){
-   if(!all(sort(unique(outcome_column)) == c(0,1))){stop('outcome column should be numeric ones and zeros')}
+                            max_x = NULL,
+                            dis_names = NULL){
+   if(suppressWarnings(!all(sort(unique(outcome_column)) == c(0,1)))){stop('outcome column should be numeric ones and zeros')}
 
    if(length(outcome_column) != length(comorbid_column)){stop('outcome column should have the same number of observations as comorbid_column')}
 
@@ -54,9 +52,9 @@ stem_funnel_plot = function(comorbid_column,
       # make stem without outcome
       a = make_stem(comorbid_column, max = cut_level, outcome_column = NULL)
    }
+
    # setup NULL objects for name space
-   outcome_column.1 <- outcome_column.2 <- rate <- dt.cut_stem <- NULL
-   seq_ <- number.l_lim1 <- number.u_lim1 <- number.l_lim2 <- number.u_lim2 <- baseline <-  NULL
+   d <- r <- stem <- score <- up <- lo <- up2 <- lo2 <- benchmark <- bl <- NULL
 
    dt = data.frame('comorbid' = comorbid_column)
    # merge stem by comorbid disease pattern
@@ -67,69 +65,51 @@ stem_funnel_plot = function(comorbid_column,
    dt$cut_stem = split_stem(dt$stem, cut_level = cut_level, maximal = maximal)
 
    # aggregate outcomes ~ stem cut pattern.
-   output = aggregate(outcome_column ~ dt$cut_stem, FUN = function(x) c(length(x), length(which(x == 1))))
+   output = aggregate(outcome_column ~ dt$cut_stem, FUN = function(x) c('total' = length(x), 'outcome' = length(which(x == 1))))
 
    clean_output = do.call(data.frame, output)
 
-   rm(output)
+   # need numerator (n) and denominator (d) to determine control limits & to plot
+   names(clean_output) <- c('stem', 'd', 'n')
 
    # calculate rate
-   clean_output$rate = clean_output[,3]/clean_output[,2]
+   clean_output$r = clean_output[,"n"]/clean_output[,"d"]
 
    # determine baseline
-   bl = sum(clean_output[,3])/sum(clean_output[,2])
+   bl = sum(clean_output[,"n"])/sum(clean_output[,"d"])
 
    # drop those with no events
-   if(is.null(max_x)){
-   lim_data = .baseline_limits(bl, max(clean_output$outcome_column.1))
-   g1 = ggplot(aes(x=outcome_column.1, y=rate), data=clean_output[clean_output$rate >0,])+
-        geom_point(colour='black', size = 4+0.5, shape = 21)+
-        geom_point(size = 4, alpha=0.3, aes(fill = dt.cut_stem, colour = dt.cut_stem))+
 
-      geom_line(aes(x = seq_, y = number.l_lim1), data = lim_data, colour='red',     linetype='dotted') +
-      geom_line(aes(x = seq_, y = number.u_lim2), data = lim_data, colour='red',     linetype='dotted') +
-      geom_line(aes(x = seq_, y = number.l_lim2), data = lim_data, colour='darkred', linetype='dotdash') +
-      geom_line(aes(x = seq_, y = number.u_lim1), data = lim_data, colour='darkred', linetype='dotdash') +
-      geom_hline(aes(yintercept = baseline), colour='black', data = lim_data) +
-      coord_cartesian(ylim=c(0,1)) +
-      scale_y_continuous(breaks=seq(0, 1, 0.1))
+   # sort out max_x
+   if(is.null(max_x)){max_x <- max(clean_output$d)}
+
+   if(!is.null(dis_names)){
+      clean_output$stem <- name_stems(clean_output$stem, dis_names)
    }
-   else{
-      # if max_x !is.null, then use max_x to generate baseline limits.
-     lim_data = .baseline_limits(bl, max_x)
 
-     g1 = ggplot(aes(x=outcome_column.1, y=rate), data=clean_output[clean_output$rate >0 & clean_output$outcome_column.1 <= max_x,])+
+   # calculate limits
+   lim_data <- funnelR::fundata(clean_output, benchmark = bl, alpha = 0.95, alpha2 = 0.975, method='approximate', step = 1)
+
+   #calculate outliers
+   outliers_dat <- funnelR::funscore(clean_output, benchmark = bl, alpha=0.95, alpha2 = 0.975, method='approximate')
+   cols <- c('#E6D72A', '#375E97')
+   g1 = ggplot(aes(x=d, y=r), data=outliers_dat[outliers_dat$r >0 & outliers_dat$d <= max_x,])+
        geom_point(colour='black', size = 4+0.5, shape = 21)+
-       geom_point(size = 4, alpha=0.3, aes(fill = dt.cut_stem, colour = dt.cut_stem))+
+       geom_point(size = 4, alpha=0.3, aes(group = stem, colour = score))+
        xlab('Frequency')+
-       geom_line(aes(x = seq_, y = number.l_lim1), data = lim_data, colour='red',     linetype='dotted') +
-       geom_line(aes(x = seq_, y = number.u_lim2), data = lim_data, colour='red',     linetype='dotted') +
-       geom_line(aes(x = seq_, y = number.l_lim2), data = lim_data, colour='darkred', linetype='dotdash') +
-       geom_line(aes(x = seq_, y = number.u_lim1), data = lim_data, colour='darkred', linetype='dotdash') +
-       geom_hline(aes(yintercept = baseline), colour='black', data = lim_data) +
+       geom_line(aes(x = d, y = up), data = lim_data[lim_data$d <= max_x,], colour='red',     linetype='dotted') +
+       geom_line(aes(x = d, y = lo), data = lim_data[lim_data$d <= max_x,], colour='red',     linetype='dotted') +
+       geom_line(aes(x = d, y = up2), data = lim_data[lim_data$d <= max_x,], colour='darkred', linetype='dotdash') +
+       geom_line(aes(x = d, y = lo2), data = lim_data[lim_data$d <= max_x,], colour='darkred', linetype='dotdash') +
+       geom_hline(aes(yintercept = benchmark), colour='black', data = lim_data[lim_data$d <= max_x,]) +
        coord_cartesian(ylim=c(0,1)) +
        scale_y_continuous(breaks=seq(0, 1, 0.1))+
        theme_bw() +
-       theme(legend.position = 'none')
+       scale_colour_manual(values = cols, labels = c('Within', 'Outside'), name = 'Within 95% control limits?')
 
-   }
-   names(clean_output) = c('cut_stem', 'frequency', 'proportion_with_outcome', 'rate_of_outcome')
-return(list(funnel_plot = g1, funnel_data = clean_output))
-}
-
-
-.baseline_limits = function(baseline, max_number, lim1 = 99, lim2 = 95){
-  #determine baseline limits; adapted from funnelR
-  # null objects for name_spacing.
-  seq_ <- number.l_lim1 <- number.u_lim1 <- number.l_lim2 <- number.u_lim2 <- NULL
-  seq_ = seq(0.001, max_number, max_number/75)
-
-  number.l_lim1 <- baseline - abs(qnorm((1-(lim1/100))/2)) * sqrt((baseline*(1-baseline)) / (seq_))
-  number.u_lim1 <- baseline + abs(qnorm((1-(lim1/100))/2)) * sqrt((baseline*(1-baseline)) / (seq_))
-
-  number.l_lim2 <- baseline - abs(qnorm((1-(lim2/100))/2)) * sqrt((baseline*(1-baseline)) / (seq_))
-  number.u_lim2 <- baseline + abs(qnorm((1-(lim2/100))/2)) * sqrt((baseline*(1-baseline)) / (seq_))
-
-  lim_data <- data.frame(baseline, seq_, number.l_lim1, number.u_lim1, number.l_lim2, number.u_lim2)
-  return(lim_data)
+   # return what is within 95% CI
+   outliers_dat <- outliers_dat[,-5]
+   names(outliers_dat) <- c('stem', 'total_number', 'number_events', 'rate', 'inside_95%', 'inside_97.5%')
+   cat('Note that this includes all data, including that excluded from the plot with max_x \n')
+   return(list(funnel_plot = g1, funnel_data = outliers_dat[order(-outliers_dat$rate),]))
 }

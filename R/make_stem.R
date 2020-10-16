@@ -56,6 +56,8 @@ make_stem = function(comorbid_column,
   dt[dt$position == '-1', c('position', 'stem')] = c('', paste0(rep(';', max_combos-1), collapse=''))
 
   dt$freq_or_outcome = ifelse(length(outcome_positions) == 1, 'frequency', 'outcome')
+  # add stem class
+  class(dt) <-append('stem', class(dt))
 
   return(dt)
   }
