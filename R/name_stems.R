@@ -20,7 +20,8 @@ name_stems = function(split_stems, dis_names, separator = '|'){
   if(any(grepl(';', split_stems))) stop('Have you split your stems yet? There should not be any ; in split stems')
   if(!is.character(separator)) stop('Separator must be a character variable.')
   named_stems = sapply(split_stems, function(x){
-    if(is.na(x)) {return('')}
+    # need == '' to enable summary to work properly
+    if(is.na(x) | x == ''){return('')}
     else{
     single_dis = as.numeric(strsplit(x, '-')[[1]])
     if(max(single_dis)> length(dis_names)) stop('Stem cannot have items greater than the length of disease names')
