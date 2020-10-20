@@ -6,6 +6,7 @@ dis_names <- list('Diabetes', 'Chronic Kidney Disease', 'Hypertension', 'Congest
 test_that("name_stem works appropriately",{
     expect_equal(name_stems(cut_stems, dis_names = dis_names), c("Liver Disease|Dementia", "Liver Disease|Congestive Cardiac Failure", "Hypertension|Liver Disease|Dementia"))
     expect_equal(name_stems(c(NA, cut_stems), dis_names = dis_names), c("","Liver Disease|Dementia", "Liver Disease|Congestive Cardiac Failure", "Hypertension|Liver Disease|Dementia"))
+    expect_equal(name_stems(c('', cut_stems), dis_names = dis_names), c("","Liver Disease|Dementia", "Liver Disease|Congestive Cardiac Failure", "Hypertension|Liver Disease|Dementia"))
     expect_equal(name_stems(cut_stems, dis_names = dis_names, separator = ':'), c(c("Liver Disease:Dementia", "Liver Disease:Congestive Cardiac Failure", "Hypertension:Liver Disease:Dementia")))
 })
 
