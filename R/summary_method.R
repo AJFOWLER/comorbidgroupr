@@ -7,12 +7,22 @@
 
 # neater summary of stems when created
 
+#This should be all stems, use the get_combinations and paste it onto the end of stems
+#Then calcalate the count by any present stems using the custom union_all
+
+
 summary.stem <- function(object,dis_names = NULL, ...){
   cat('Stems generatred using::', tools::toTitleCase(object[1,'freq_or_outcome']), '\n')
   cat('Unique comorbid strings:', nrow(object), '\n')
   # calculate the number of each disease, divided by length.
-  core_cols <- c('comorbid_column', 'Freq', 'stem')
+  object <- stems
+  core_cols <- c('comorbid_column', 'Freq', 'position')
   dt <- object[,core_cols]
+
+  max_combos <- nchar(object$stem[1]) - nchar(gsub(';', '', object$stem[1]))+1
+
+  # get unique combinations of positions
+  tt <- apply(dt, 1, function(x){sapply(1:max_combos, function(y) unique_combos(x['position'], combinations = y))})
 
   # split out stem base R to avoid dependency overhead/for fun!
   splitted <- strsplit(dt$stem, ';')
