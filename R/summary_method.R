@@ -7,61 +7,67 @@
 
 # neater summary of stems when created
 
-#This should be all stems, use the get_combinations and paste it onto the end of stems
-#Then calcalate the count by any present stems using the custom union_all
+# This should be all stems, use the get_combinations and paste it onto the end of stems
+# Then calculate the count by any present stems using the custom union_all
 
-
-summary.stem <- function(object,dis_names = NULL, ...){
-  cat('Stems generatred using::', tools::toTitleCase(object[1,'freq_or_outcome']), '\n')
+summary.stem <- function(object,dis_names = NULL, force_max = FALSE, ...){
+  cat('Stems generated using::', tools::toTitleCase(object[1,'freq_or_outcome']), '\n')
   cat('Unique comorbid strings:', nrow(object), '\n')
   # calculate the number of each disease, divided by length.
-  object <- stems
   core_cols <- c('comorbid_column', 'Freq', 'position')
   dt <- object[,core_cols]
 
-  max_combos <- nchar(object$stem[1]) - nchar(gsub(';', '', object$stem[1]))+1
+    max_combos <- nchar(gsub('[^;]', '', object$stem[1]))+1 #replace everything that isn't ';' with '',
+  outlist <- list()
 
-  # get unique combinations of positions
-  tt <- apply(dt, 1, function(x){sapply(1:max_combos, function(y) unique_combos(x['position'], combinations = y))})
+  for(i in 1:max_combos){
+    cat('Doing', i, 'stem level \n')
 
-  # split out stem base R to avoid dependency overhead/for fun!
-  splitted <- strsplit(dt$stem, ';')
+    # generate unique combinations
+    combos = unique_combos(dt$position, i)
 
-  # pad
-  len = max(sapply(splitted, length))
-  splitted_pad = lapply(splitted, function(x) c(x, rep('', len - length(x))))
+    # if no combos; end loop.
+    if(is.null(combos)){
+      cat('No', i, 'combinations, ending process \n')
+      break
+    }
+    combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = 0, min_freq=0, tots = sum(object$Freq))
+    outlist[[i]] <- combo_freq
+  }
 
-  # bind
-  split_df <- cbind(dt, do.call(rbind, splitted_pad))
+  # top ten of each list
+  toplist <- lapply(outlist, function(x) x[order(-x[,'freq']),][1:10,!names(x) %in% c('outcome', 'propr_out')])
 
-  # melt to long
-  to_melt <- names(split_df)[!(names(split_df) %in% core_cols)]
-  melted <- lapply(to_melt, function(x){ y <- split_df[,c('Freq', x)]; names(y)[2] <- 'stem'; return(y)})
-  melted_df <- do.call(rbind, melted)
-  # name stems
   if(is.null(dis_names)){
     cat('Did you know, if you pass disease names to the dis_name argument I can provide names of diseases! \n')
     cat('\n')
   }
   else{
-    melted_df[, 'stem'] <- sapply(melted_df[,'stem'], function(x) name_stems(x, dis_names = dis_names, separator = '-'))
+    toplist <- lapply(toplist, function(x) data.frame(cbind(sapply(x[,!names(x) == 'freq'], function(y) disease_names[y]), 'freq'=x[,'freq']), stringsAsFactors = F))
   }
-  # sum across all stems
-  maths <- aggregate(melted_df$Freq, by=list(melted_df$stem), function(x) sum(x))
-  maths <- maths[order(-maths$x),]
-  # order and present by length of disease stem (e.g. top 10 1, 2, 3)
-  maths$number_of_conditions <- nchar(maths$Group.1) - nchar(gsub('-', '', maths$Group.1))+1
-  maths[maths$Group.1 == '', c('number_of_conditions', 'Group.1')] <- c(0, 'No diseases')
-  final_out <- lapply(1:len, function(x){
-    top_ten = maths[maths$number_of_conditions == x, ][1:10,]
-    top_ten$format <- paste0(top_ten$Group.1, ' (n:', top_ten$x,')')
-    return(top_ten$format)
-  })
 
-  cleaned_final_out <- data.frame(do.call(cbind, final_out), stringsAsFactors = F)
-  names(cleaned_final_out) <- do.call(paste, list('Number of diseases:', 1:len))
+  # now collapse columns
+  cleaned_top <- list()
+  cleaned_top[[1]] <- toplist[[1]]
+  names(cleaned_top[[1]]) <- c('unique_combinations', 'freq')
+  for(item in 2:length(toplist)){
+    x <- toplist[[item]]
+    x[,'unique_combinations'] <- apply(x[,!names(x) == 'freq'],1, function(x) paste0(x, collapse='-'))
+
+    cleaned_top[[item]] <- x[,c('unique_combinations', 'freq')]
+  }
+
+  clean_up <- function(freq) return(paste0(freq, ' (', round(freq/sum(object$Freq) *100, 1), ' %)'))
+  cleaned_top_up <- lapply(cleaned_top, function(x) cbind(x[,'unique_combinations'], clean_up(as.numeric(x$freq))))
+  cleaned_final_out <- data.frame(do.call(cbind, cleaned_top_up), stringsAsFactors = F)
+  # now name
+  # number of diseases
+  clean_names <- do.call(paste, list('Number of diseases:', 1:max_combos))
+  # freq
+  freq_names <- rep('Frequency (%)', max_combos)
+
+  names(cleaned_final_out) <-c(rbind(clean_names, freq_names))
 
   cat('Commonest disease combinations across all strings; note patients may be represented multiple times:\n')
-
   return(cleaned_final_out)
   }
