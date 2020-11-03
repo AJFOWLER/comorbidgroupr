@@ -26,7 +26,7 @@
 
 calculate_group_frequency <- function(unique_combinations, all_diseases, outcome_positions, min_freq=0, tots){
   # logic for parameter entry:
-  #set up disease list
+  # set up disease list
   setups = .get_list_pos(all_diseases)
 
   combos_outcome = data.frame(unique_combinations, stringsAsFactors = F)
