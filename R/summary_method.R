@@ -10,15 +10,18 @@
 # This should be all stems, use the get_combinations and paste it onto the end of stems
 # Then calculate the count by any present stems using the custom union_all
 
-summary.stem <- function(object,dis_names = NULL, force_max = FALSE, ...){
+summary.stem <- function(object,dis_names = NULL, ...){
   cat('Stems generated using::', tools::toTitleCase(object[1,'freq_or_outcome']), '\n')
   cat('Unique comorbid strings:', nrow(object), '\n')
   # calculate the number of each disease, divided by length.
   core_cols <- c('comorbid_column', 'Freq', 'position')
   dt <- object[,core_cols]
 
-    max_combos <- nchar(gsub('[^;]', '', object$stem[1]))+1 #replace everything that isn't ';' with '',
+  max_combos <- nchar(gsub('[^;]', '', object$stem[1]))+1 #replace everything that isn't ';' with '',
   outlist <- list()
+  # need to remake all_diseases_list as may be just a subset e.g. rows 1:100 of comorbid_column
+  cc_vector <- rep(as.character(object$comorbid_column), object$Freq)
+  all_diseases_list <- get_disease_counts(cc_vector)
 
   for(i in 1:max_combos){
     cat('Doing', i, 'stem level \n')
@@ -31,7 +34,8 @@ summary.stem <- function(object,dis_names = NULL, force_max = FALSE, ...){
       cat('No', i, 'combinations, ending process \n')
       break
     }
-    combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = 0, min_freq=0, tots = sum(object$Freq))
+
+    combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases_list, outcome_positions = 0, min_freq=0, tots = sum(object$Freq))
     outlist[[i]] <- combo_freq
   }
 
@@ -43,7 +47,7 @@ summary.stem <- function(object,dis_names = NULL, force_max = FALSE, ...){
     cat('\n')
   }
   else{
-    toplist <- lapply(toplist, function(x) data.frame(cbind(sapply(x[,!names(x) == 'freq'], function(y) disease_names[y]), 'freq'=x[,'freq']), stringsAsFactors = F))
+    toplist <- lapply(toplist, function(x) data.frame(cbind(sapply(x[,!names(x) == 'freq'], function(y) dis_names[y]), 'freq'=x[,'freq']), stringsAsFactors = F))
   }
 
   # now collapse columns
@@ -56,11 +60,15 @@ summary.stem <- function(object,dis_names = NULL, force_max = FALSE, ...){
 
     cleaned_top[[item]] <- x[,c('unique_combinations', 'freq')]
   }
-
+ # generic clean up function
   clean_up <- function(freq) return(paste0(freq, ' (', round(freq/sum(object$Freq) *100, 1), ' %)'))
+  # clean up, as.numeric because some coerced to chr
   cleaned_top_up <- lapply(cleaned_top, function(x) cbind(x[,'unique_combinations'], clean_up(as.numeric(x$freq))))
+  # cbind
   cleaned_final_out <- data.frame(do.call(cbind, cleaned_top_up), stringsAsFactors = F)
+
   # now name
+  # should be number of diseases:1, frequency(%), number of diseases:2, ...
   # number of diseases
   clean_names <- do.call(paste, list('Number of diseases:', 1:max_combos))
   # freq
