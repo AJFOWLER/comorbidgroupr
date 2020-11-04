@@ -9,6 +9,11 @@ chr = c('a', 'b', 'a', 'b', 'b')
 # outcomes
 outcomes = c(1,0,0,1)
 
+test_that("multiple states are captured",{
+  multi_state <- c('0200', '0120', '1100')
+  expect_error(make_stem(multi_state))
+})
+
 test_that("error messages are captured in make_stem", {
   expect_error(make_stem(equal_strings,max = 'a'), 'max must be a single number or deafult', fixed = T)
   expect_error(make_stem(unequal_strings, max='a'), 'comorbid column must be the same length for each record', fixed=T)

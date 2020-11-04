@@ -71,3 +71,19 @@ test_that('identifying multiple states function works appropraitely', {
   expect_equal(.identify_multiple_states(c('222','333','000')), "multiple")
 
 })
+
+test_that('multiple_state_processor integrates with make_stem',{
+  # run this through to ensure no errors
+  df <- data.frame(comorbid_column = c('23001', '11101', '21011', '22111', '23001'))
+  # do multistate
+  ms <- multiple_state_processor(df$comorbid_column, dis_names = c('first', 'second', 'third', 'fourth', 'fifth'))
+  # merge back in
+  df <- merge(df, ms[[1]][,c('comorbid_column', 'master_str')], by.x = 'comorbid_column', by.y='comorbid_column', all.x=T)
+  # Make stem
+  stem <- make_stem(df$master_str, max=2)
+  # summary using ms[[2]] object as names
+  sumstem <- summary(stem, dis_names = ms[[2]])
+  # all looks correct
+  expect_equal(sumstem[1,1], 'fifth1')
+  expect_equal(nrow(ms[[1]]), 4)
+  })

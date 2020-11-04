@@ -1,16 +1,28 @@
 #' Multiple states
 #'
-#' @description Sometimes, diseases may have multiple states, for example a different stage of cancer or kidney disease. This function processes comorbid strings that have multiple states
-#' to enable them to be used within the make_stems algorithm
+#' @description Sometimes, diseases may have multiple states, for example a different stage of cancer or kidney disease. This function processes \code{comorbid_columns} that have multiple states
+#' to enable them to be used within the \code{\link{make_stems}} algorithm.
+#' The intended use is to run this on data that has multiple states, merge the \code{master_str} to the original data on the basis of the \code{comorbid_column}.
+#' The \code{\link{make_stems}} can then be run on this data.
+#'
 #' @param comorbid_column A vector of character strings made up of numbers 0-9 or of factors coercible to character, all should be identical lengths.
 #' @param dis_names A list of disease names associated with each position as used in \code{\link{get_disease_counts}}
 #'
-#' @returns A list, the first element of which is a data.frame which includes \code{master_str}, which is can be joined with original data.
+#' @returns If \code{dis_names} is passed, then a list, the first element of which is a data.frame, the second is a vector of new names.
+#' If only \code{comorbid_column} is passed, then only a data.frame is returned  which includes:
+#' \describe{
+#' \item{comorbid_column}{The original \code{comorbid_column} passed to the function}
+#' \item{Freq}{The frequency of that \code{comorbid_column}}
+#' \item{\code{master_str}}{The new string that has been returned}
+#'}
 #' @examples
+#' comorbid_column <- c('23001', '11101', '21011', '22111', '23001')
+#' disease_names = c('first', 'second', 'third', 'fourth', 'fifth')
+#'
+#' ms <- multiple_state_processor(comorbid_column) #no names
+#' ms <- multiple_state_processor(comorbid_column, dis_names = disease_names)
 #'
 #' @export
-
- #a<-c('3003', '2100', '3103', '0114')
 
 multiple_state_processor <- function(comorbid_column, dis_names = NULL){
   if(!check_strings_equal(comorbid_column)){stop('comorbid column must be the same length for each record')}
