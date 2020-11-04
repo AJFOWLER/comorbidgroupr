@@ -1,7 +1,7 @@
 #' Make combinations of diseases ('stems') up to a maximum level
 #' @description Generate disease stems from a vector of character strings.
 #' @param comorbid_column A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.
-#' If data contains elements with multiple states (i.e. where a character element may have a value of >1), then please see \link{\code{multiple_state_processor}}.
+#' If data contains elements with multiple states (i.e. where a character element may have a value of >1), then please see \code{\link{multiple_state_processor}}.
 #' @param max The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be calculated using \code{determine_default_combinations()}.
 #' @param min_freq Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.
 #' @param outcome_column A numeric vector one if outcome occurred and zero if outcome did not occur. Should be the same length as \code{comorbid_column} with each element relating to the same record as the \code{comorbid_column}. If \code{outcome_column} is passed, then the stem will be generated based on combinations with the highest event rate.
@@ -14,7 +14,7 @@
 #'
 #' @export
 
-make_stem = function(comorbid_column,
+make_stem <- function(comorbid_column,
                      max='default',
                      min_freq = 0,
                      outcome_column = NULL){

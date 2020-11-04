@@ -12,7 +12,8 @@ make_stem(
 )
 }
 \arguments{
-\item{comorbid_column}{A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.}
+\item{comorbid_column}{A vector of character strings made up of 0s and 1s, or of factors coercible to character, all should be identical lengths.
+If data contains elements with multiple states (i.e. where a character element may have a value of >1), then please see \code{\link{multiple_state_processor}}.}
 
 \item{max}{The maximum number of combinations to be considered, if left as 'default' then a maximum based on code frequency will be calculated using \code{determine_default_combinations()}.}
 

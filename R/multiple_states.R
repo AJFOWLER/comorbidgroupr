@@ -1,9 +1,9 @@
 #' Multiple states
 #'
 #' @description Sometimes, diseases may have multiple states, for example a different stage of cancer or kidney disease. This function processes \code{comorbid_columns} that have multiple states
-#' to enable them to be used within the \code{\link{make_stems}} algorithm.
+#' and processes them to a new \code{master_str} which is made up of 0s and 1s only.
 #' The intended use is to run this on data that has multiple states, merge the \code{master_str} to the original data on the basis of the \code{comorbid_column}.
-#' The \code{\link{make_stems}} can then be run on this data.
+#' The \code{\link{make_stem}} can then be run on this data.
 #'
 #' @param comorbid_column A vector of character strings made up of numbers 0-9 or of factors coercible to character, all should be identical lengths.
 #' @param dis_names A list of disease names associated with each position as used in \code{\link{get_disease_counts}}

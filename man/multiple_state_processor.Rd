@@ -22,9 +22,9 @@ If only \code{comorbid_column} is passed, then only a data.frame is returned  wh
 }
 \description{
 Sometimes, diseases may have multiple states, for example a different stage of cancer or kidney disease. This function processes \code{comorbid_columns} that have multiple states
-to enable them to be used within the \code{\link{make_stems}} algorithm.
-The intended use is to run this on data that has multiple states, merge the \code{master_str} back in on the basis of \code{comorbid_column}.
-This can then be run via the \code{\link{make_stems}} per normal
+and processes them to a new \code{master_str} which is made up of 0s and 1s only.
+The intended use is to run this on data that has multiple states, merge the \code{master_str} to the original data on the basis of the \code{comorbid_column}.
+The \code{\link{make_stem}} can then be run on this data.
 }
 \examples{
 comorbid_column <- c('23001', '11101', '21011', '22111', '23001')
@@ -32,4 +32,5 @@ disease_names = c('first', 'second', 'third', 'fourth', 'fifth')
 
 ms <- multiple_state_processor(comorbid_column) #no names
 ms <- multiple_state_processor(comorbid_column, dis_names = disease_names)
+
 }
