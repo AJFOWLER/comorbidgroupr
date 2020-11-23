@@ -35,3 +35,7 @@ test_that('stems are an s3 class',{
   expect_s3_class(make_stem(equal_strings), 'stem')
 })
 
+test_that('ties are handled correctly',{
+  tied_data <- c('0001', '0011', '0010')
+  stem <- make_stem(tied_data)
+})

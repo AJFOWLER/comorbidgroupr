@@ -34,13 +34,20 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
 
   # generate the base of the stem
   main_stem = sapply(poscolumn, function(x) {
+
+    if(x[[1]] == '-1'){
+      return(0)
+    }
     a = all_dis_count[x]
     # if only one disease, that is the base.
     if(length(a) == 1){
       return(x)}
     else{
       # else get the largest of those you select.
-      return(which(all_dis_count == max(a))[1])}
+      biggest = which(all_dis_count == max(a)) # if multiple, first find only those in x
+      largest = biggest[which(biggest %in% x)][[1]]
+      # if multiple, take the first
+      return(largest)}
   })
 
   # deal with 0000 later
