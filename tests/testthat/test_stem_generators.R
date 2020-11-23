@@ -36,6 +36,8 @@ test_that('stems are an s3 class',{
 })
 
 test_that('ties are handled correctly',{
-  tied_data <- c('0001', '0011', '0010')
+  tied_data <- c('0001', '0011', '0010', '1000', '1000')
+  # in old version, this returned 1;3-4 for stem of row 3 which should be 3;3-4
   stem <- make_stem(tied_data)
+  expect_equal(stem[3,'stem'], '3;3-4')
 })
