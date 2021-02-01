@@ -41,3 +41,10 @@ test_that('ties are handled correctly',{
   stem <- make_stem(tied_data)
   expect_equal(stem[3,'stem'], '3;3-4')
 })
+
+test_that('outcome_capture_correct', {
+  cc_string <- c('1001', '0100', '1101', '1001') # by frequency stem for 3 should be 1;1-4
+  outcome_string <- c('0', '1', '1', '0') # by outcome should be 1;2-4
+  expect_equal(make_stem(cc_string, max=2)[3,4], "1;1-4")
+  expect_equal(make_stem(cc_string, outcome_column = outcome_string, max=2)[3,4], "1;2-4")
+})
