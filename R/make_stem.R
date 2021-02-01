@@ -54,7 +54,7 @@ make_stem <- function(comorbid_column,
 
   cat('Using', max_combos, 'combinations \n')
 
-  dt$stem = stem_generator(dt$position, max_combos = max_combos, all_diseases, min_freq = min_freq, tots = length(comorbid_column))
+  dt$stem = stem_generator(dt$position, max_combos = max_combos, all_diseases = all_diseases, outcome_positions = outcome_positions, min_freq = min_freq, tots = length(comorbid_column))
   # if no diseases (position == '-1') then step is just empty
   dt[dt$position == '-1', c('position', 'stem')] = c('', paste0(rep(';', max_combos-1), collapse=''))
 

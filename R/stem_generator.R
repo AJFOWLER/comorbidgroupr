@@ -26,8 +26,6 @@
 #'
 #' @export
 
-# TIES
-
 stem_generator = function(poscolumn, max_combos = 3, all_diseases,
                           outcome_positions = 0, min_freq = 0, tots){
   all_dis_count = sapply(all_diseases, length)
