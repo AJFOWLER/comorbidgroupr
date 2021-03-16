@@ -39,3 +39,4 @@ get_combos = function(positions, combinations = 2){
     return(t(utils::combn(position_, combinations)))
   }
 }
+
