@@ -81,7 +81,7 @@ make_stem <- function(comorbid_column,
       intersect_w_count <- Reduce(intersect, dis_rows, count_rows) # intersection
       exclusive_intersect <- length(intersect_w_count)
       exclusive_outcome <- intersect(intersect_w_count, outcome_positions)
-      return(list('number_with_count' = length(count_rows), 'number_with_this' = exclusive_intersect, 'number_with_outcome' = .make_zero(exclusive_outcome)))
+      return(list('number_with_count' = length(count_rows), 'number_with_exlcusive_combo' = exclusive_intersect, 'number_with_outcome_this_combo' = .make_zero(exclusive_outcome)))
     })
 
     exclusive_format <- do.call(rbind, exclusive_results)
