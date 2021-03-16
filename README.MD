@@ -13,8 +13,8 @@ Degree = N overlaps
 
 Things to do:
  1. Clean up code to make more generalisable (?combineR)
- 2. Reduce redundency
- 3. Add tests for cardinality
+~~ 2. Reduce redundency ~~
+~~ 3. Add tests for cardinality ~~
  4. Consistent documentation
  5. Implement deviation. 
  6. ?implement upset visualisation
