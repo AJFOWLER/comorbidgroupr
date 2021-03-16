@@ -6,6 +6,7 @@
 #' @param min_freq Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.
 #' @param outcome_positions Numeric vector where each number refers to a record that suffered a particular outcome.
 #' @param tots Total number of records included to allow calculation of disease frequency.
+#' @param use_outcome Logical if to use outcome variable for stem generation.
 #' @returns A dataframe with the \code{main_stem} for each pattern up to a maximum set in \code{max_combos}.
 #' @examples
 #' positions = list(c(1,2,3,4), c(3), c(3), c(2,3))
@@ -27,7 +28,8 @@
 #' @export
 
 stem_generator = function(poscolumn, max_combos = 3, all_diseases,
-                          outcome_positions = 0, min_freq = 0, tots){
+                          outcome_positions = 0, min_freq = 0, tots,
+                          use_outcome = FALSE){
   all_dis_count = sapply(all_diseases, length)
 
   # generate the base of the stem
@@ -65,7 +67,7 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
     }
     # if only one combination, update.
     else if(nrow(combos) == 1){
-      combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = outcome_positions, min_freq=min_freq, tots = tots)
+      combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = outcome_positions, min_freq=min_freq, tots = tots, use_outcome = use_outcome)
 
       rows_relevent = which(sapply(poscolumn, function(x) all(combos[1:i] %in% x)))
       if(nrow(combo_freq) == 0)
@@ -76,7 +78,7 @@ stem_generator = function(poscolumn, max_combos = 3, all_diseases,
     }
 
     else{
-      combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = outcome_positions, min_freq=min_freq, tots = tots)
+      combo_freq = calculate_group_frequency(combos, all_diseases = all_diseases, outcome_positions = outcome_positions, min_freq=min_freq, tots = tots, use_outcome = use_outcome)
       # work through each row (this has been ordered ascending so last item should be most frequent)
       for(rows in 1:nrow(combo_freq)){
         # select relevant combos

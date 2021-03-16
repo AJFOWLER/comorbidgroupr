@@ -10,7 +10,8 @@ stem_generator(
   all_diseases,
   outcome_positions = 0,
   min_freq = 0,
-  tots
+  tots,
+  use_outcome = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ stem_generator(
 \item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.}
 
 \item{tots}{Total number of records included to allow calculation of disease frequency.}
+
+\item{use_outcome}{Logical if to use outcome variable for stem generation.}
 }
 \value{
 A dataframe with the \code{main_stem} for each pattern up to a maximum set in \code{max_combos}.

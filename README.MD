@@ -12,7 +12,9 @@ Cardinality = N
 Degree = N overlaps
 
 Things to do:
- 1. Clean up code to make more generalisable
- 2. Separate out exclusive sets from aggregate sets
- 3. Implement deviation. 
- 4. ?implement upset visualisation
+ 1. Clean up code to make more generalisable (?combineR)
+~~ 2. Reduce redundency ~~
+~~ 3. Add tests for cardinality ~~
+ 4. Consistent documentation
+ 5. Implement deviation. 
+ 6. ?implement upset visualisation

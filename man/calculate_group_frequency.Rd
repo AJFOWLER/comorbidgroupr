@@ -9,7 +9,8 @@ calculate_group_frequency(
   all_diseases,
   outcome_positions,
   min_freq = 0,
-  tots
+  tots,
+  use_outcome = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ calculate_group_frequency(
 \item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.}
 
 \item{tots}{Numeric, total length of \code{comorbid_column} initially profiled to calculate frequency proportions to compare against \code{min_freq}.}
+
+\item{use_outcome}{Logical if to use outcome variable for stem generation.}
 }
 \value{
 data.frame ordered from lowest to highest proportion of those suffering outcomes (if \code{outcome_positions} entered) or number of records associated with that combination (if no \code{outcome_positions} entered).

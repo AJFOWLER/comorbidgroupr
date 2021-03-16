@@ -8,7 +8,8 @@ make_stem(
   comorbid_column,
   max = "default",
   min_freq = 0,
-  outcome_column = NULL
+  outcome_column = NULL,
+  use_outcome = FALSE
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ If data contains elements with multiple states (i.e. where a character element m
 \item{min_freq}{Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.}
 
 \item{outcome_column}{A numeric vector one if outcome occurred and zero if outcome did not occur. Should be the same length as \code{comorbid_column} with each element relating to the same record as the \code{comorbid_column}. If \code{outcome_column} is passed, then the stem will be generated based on combinations with the highest event rate.}
+
+\item{use_outcome}{Logical if to use outcome variable for stem generation.}
 }
 \value{
 data.frame with one row per unique \code{comorbid_string} pattern and columns: \code{comorbid_string} pattern, frequency of string pattern, positions within the pattern, stem and if frequency or outcome was used.
