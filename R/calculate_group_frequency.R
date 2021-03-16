@@ -6,7 +6,7 @@
 #' @param outcome_positions Numeric vector where each element refers to a record that suffered a particular outcome.
 #' @param min_freq Number between 0 and 1; minimum proportion of code combinations to be included in the stem. If \code{outcome_column} is passed, \code{min_freq} is the minimum event rate per combination to be considered.
 #' @param tots Numeric, total length of \code{comorbid_column} initially profiled to calculate frequency proportions to compare against \code{min_freq}.
-#'
+#' @param use_outcome Logical if to use outcome variable for stem generation.
 #' @return data.frame ordered from lowest to highest proportion of those suffering outcomes (if \code{outcome_positions} entered) or number of records associated with that combination (if no \code{outcome_positions} entered).
 #'
 #' @examples
@@ -24,7 +24,7 @@
 #' @export
 
 
-calculate_group_frequency <- function(unique_combinations, all_diseases, outcome_positions, min_freq=0, tots){
+calculate_group_frequency <- function(unique_combinations, all_diseases, outcome_positions, min_freq=0, tots, use_outcome = FALSE){
   # logic for parameter entry:
   # set up disease list
   setups = .get_list_pos(all_diseases)
@@ -45,7 +45,7 @@ calculate_group_frequency <- function(unique_combinations, all_diseases, outcome
 
   combos_outcome$propr_out = combos_outcome$out/combos_outcome$freq
 
-  if(length(outcome_positions) == 1){
+  if(length(outcome_positions) == 1 | use_outcome == FALSE){
     # if no outcomes data, then just do based on freq
     combos_outcome = combos_outcome[combos_outcome$freq/tots >= min_freq, ]
 

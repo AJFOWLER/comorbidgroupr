@@ -21,7 +21,9 @@ test_that("error messages are captured in make_stem", {
 
 test_that("frequency or outcome are accurately reported", {
   expect_equal(make_stem(equal_strings, outcome_column =  NULL)[1,'freq_or_outcome'], 'frequency')
-  expect_equal(make_stem(equal_strings, outcome_column = outcomes)[1,'freq_or_outcome'], 'outcome')
+  expect_equal(make_stem(equal_strings, outcome_column = outcomes)[1,'freq_or_outcome'], 'frequency') # simply passing an outcome col not sufficient
+  expect_equal(make_stem(equal_strings, outcome_column = outcomes, use_outcome = TRUE)[1,'freq_or_outcome'], 'outcome') # simply passing an outcome col not sufficient
+
 })
 
 test_that('make stem works accurately', {
@@ -44,7 +46,9 @@ test_that('ties are handled correctly',{
 
 test_that('outcome_capture_correct', {
   cc_string <- c('1001', '0100', '1101', '1001') # by frequency stem for 3 should be 1;1-4
-  outcome_string <- c('0', '1', '1', '0') # by outcome should be 1;2-4
+  outcome_string <- c('0', '1', '1', '0') # by outcome should be 1;2-4 IF use_outcome is provided
   expect_equal(make_stem(cc_string, max=2)[3,4], "1;1-4")
-  expect_equal(make_stem(cc_string, outcome_column = outcome_string, max=2)[3,4], "1;2-4")
+  expect_equal(make_stem(cc_string, outcome_column = outcome_string, max=2)[3,4], "1;1-4")
+  expect_equal(make_stem(cc_string, outcome_column = outcome_string, max=2, use_outcome = TRUE)[3,4], "1;2-4")
+  expect_equal(make_stem(cc_string, outcome_column=outcome_string, max=2, use_outcome=FALSE)[1:2,6],c(1,0))
 })

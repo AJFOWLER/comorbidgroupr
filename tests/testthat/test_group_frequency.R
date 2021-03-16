@@ -17,7 +17,8 @@ outcomes = c(1,0,0,1)
 test_that('frequency or outcome correctly captured',{
   expect_equal(names(calculate_group_frequency(unique_combinations = unique_pos, all_diseases = disease_counts, outcome_positions = 0, tots = 4))[3:5], c('freq', 'outcome', 'propr_out'))
   expect_equal(calculate_group_frequency(unique_combinations = unique_pos, all_diseases = disease_counts, outcome_positions = 0, tots = 4)[4,1], 2)
-  expect_equal(calculate_group_frequency(unique_combinations = unique_pos, all_diseases = disease_counts, outcome_positions = outcomes, tots = 4)[1,'propr_out'], 0.5)
+  expect_equal(calculate_group_frequency(unique_combinations = unique_pos, all_diseases = disease_counts, outcome_positions = outcomes, tots = 4)[1,'propr_out'], 1.0) # no use_outcome flag; so uses frequency
+  expect_equal(calculate_group_frequency(unique_combinations = unique_pos, all_diseases = disease_counts, outcome_positions = outcomes, tots = 4, use_outcome = TRUE)[1,'propr_out'], 0.5) #use_outcome so uses outcome proportion
 })
 
 test_that('reduce overlap works', {
