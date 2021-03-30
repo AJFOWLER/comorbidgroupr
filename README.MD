@@ -4,9 +4,11 @@ This is a very important reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PM
 
 How is this different from UpSetR? Well a key thing is actually providing the data!
 
-Figure 6: a) Exlcusive set (i.e. CCF + CKD but nothing else) vs. b) Aggregates which would include anyone with e.g. CCF+CKD
+Figure 6: 
+a) Exlcusive set (i.e. CCF + CKD but nothing else) vs. 
+b) Aggregates which would include anyone with e.g. CCF+CKD
 
-With exclusive sets we can determine the deviation which expresses 'surprise' of cardinality at a given intersection..
+With exclusive sets we can determine the deviation which expresses 'surprise' of cardinality at a given intersection.
 
 Cardinality = N
 Degree = N overlaps
